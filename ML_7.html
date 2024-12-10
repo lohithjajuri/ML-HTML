@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Defect Prediction with Machine Learning</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        h1, h2, h3 { color: #007BFF; }
+        img { max-width: 100%; height: auto; margin-bottom: 20px; }
+        .code-block { background: #f4f4f4; padding: 10px; border-left: 5px solid #007BFF; font-family: monospace; overflow-x: auto; }
+        .note { font-style: italic; color: gray; }
+        .github-link { text-decoration: none; color: #ffffff; background-color: #007BFF; padding: 10px 15px; border-radius: 5px; }
+        .github-link:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Software Defect Prediction with Machine Learning</h1>
+            <p>Explore how machine learning helps predict software defects, enhancing code quality and minimizing development costs.</p>
+        </header>
+
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>Software defects are inevitable in any development lifecycle. However, predicting potential defects before deployment ensures smoother releases and reduces operational costs. This report delves into the use of Random Forests to classify software modules as defective or non-defective.</p>
+        </section>
+
+        <section id="how-it-works">
+            <h2>How Defect Prediction Works</h2>
+            <p>The prediction process follows these steps:</p>
+            <ul>
+                <li><strong>Data Collection:</strong> Gather software metrics like complexity and previous defect history.</li>
+                <li><strong>Preprocessing:</strong> Normalize data, fill missing values, and encode categorical variables.</li>
+                <li><strong>Feature Engineering:</strong> Select metrics that influence defect occurrence.</li>
+                <li><strong>Model Training:</strong> Use supervised learning algorithms like Random Forest or SVM.</li>
+                <li><strong>Evaluation:</strong> Assess performance using metrics such as accuracy and precision.</li>
+            </ul>
+            <p class="note">Below is a workflow diagram summarizing these steps:</p>
+            <img src="Screenshot 2024-12-10 100009.png" alt="Workflow Diagram for Defect Prediction" title="Workflow Diagram">
+        </section>
+
+        <section id="implementation">
+            <h2>Python Implementation</h2>
+            <p>The Python code below demonstrates defect prediction using Random Forest:</p>
+            <div class="code-block">
+<pre>
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+url = "https://github.com/datasets/titanic/raw/main/data.csv"
+data = pd.read_csv(url)
+
+# Preprocess data
+X = data.drop(columns=['Survived'])  # Features
+y = data['Survived']                # Target
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train Random Forest Classifier
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Predictions
+y_pred = model.predict(X_test)
+
+# Evaluate
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.2f}")
+print(classification_report(y_test, y_pred))
+
+# Visualize Confusion Matrix
+sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt="d", cmap="Blues")
+plt.show()
+
+# Feature Importance
+plt.barh(X.columns, model.feature_importances_, color="skyblue")
+plt.xlabel("Importance")
+plt.title("Feature Importances")
+plt.show()
+</pre>
+            </div>
+            <p>The implementation utilizes metrics like precision and recall for evaluation, alongside feature importance visualizations.</p>
+        </section>
+
+        <section id="results">
+            <h2>Results and Analysis</h2>
+            <ul>
+                <li><strong>Accuracy:</strong> ~79%</li>
+                <li><strong>Precision:</strong> High, especially for non-defective classification.</li>
+                <li><strong>Recall:</strong> Effective at identifying defective modules.</li>
+            </ul>
+            <p>Below is a visual representation of the confusion matrix and key results:</p>
+            <img src="Screenshot 2024-12-10 103120.png" alt="Results Visuals" title="Results and Analysis">
+        </section>
+
+        <section id="applications">
+            <h2>Applications</h2>
+            <ul>
+                <li><strong>Bug Prioritization:</strong> Identify high-risk modules for immediate attention.</li>
+                <li><strong>Quality Assurance:</strong> Boost testing efforts on likely defective components.</li>
+                <li><strong>Efficient Resource Allocation:</strong> Allocate development resources optimally based on risk analysis.</li>
+            </ul>
+        </section>
+
+        <section id="conclusion">
+            <h2>Conclusion</h2>
+            <p>Machine learning models like Random Forests offer a robust solution for defect prediction. Future advancements can integrate real-time metrics and CI/CD pipelines to make predictive models an integral part of software engineering workflows.</p>
+        </section>
+
+        <section id="github">
+            <h2>GitHub Code Repository</h2>
+            <p>You can explore the complete implementation on GitHub:</p>
+            <a href="https://github.com/lohithjajuri/ML-Repository" target="_blank" class="github-link">View Code on GitHub</a>
+        </section>
+    </div>
+</body>
+</html>
